@@ -1,6 +1,6 @@
-struct Action; //placeholder, eventually Action will be an enum with every possible action
+use crate::event::Event;
 
 pub trait InputMap {
   type Input;
-  fn input_to_action(&self, input: Self::Input) -> Action; 
+  fn input_to_event(&self, input: Self::Input) -> Event; 
 }
