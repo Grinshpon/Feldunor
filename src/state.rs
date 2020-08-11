@@ -19,7 +19,7 @@ pub enum SEvent<T> {
   Pop,
   Switch(StateObject<T>),
   Swap, // swap last and second-to-last states
-  Quit,
+  Quit, //todo
 }
 
 pub struct AppData {
@@ -32,7 +32,7 @@ pub trait State {
   fn as_any(&self) -> &dyn Any;
   fn load(&mut self, _data: &mut AppData) {}
   fn update(&mut self, _data: &mut AppData) -> SEvent<Self::Event> {SEvent::Cont}
-  // fn event(&mut self, event: Event) -> SEvent {SEvent::Cont}
+  fn event(&mut self, _data: &mut AppData, _event: Self::Event) -> SEvent<Self::Event> {SEvent::Cont}
   // fn unhandled_event(&mut self, event: Event) -> SEvent {SEvent::Cont}
   fn unload(&mut self, _data: &mut AppData) {}
   fn quit(&mut self, _is_current_scene: bool) -> bool {true}
@@ -42,7 +42,7 @@ pub type StateObject<T> = Box<dyn State<Event = T>>;
 
 pub struct StateManager<T> {
   stack: Vec<StateObject<T>>,
-  data: AppData,
+  pub data: AppData,
   //context/config,
 }
 
@@ -69,6 +69,9 @@ impl <T> StateManager <T> {
       Some(mut popped) => { popped.unload(&mut self.data); Some(popped) },
       None => None,
     }
+  }
+  pub fn peek(&mut self) -> Option<&StateObject<T>> {
+    self.stack.get(self.stack_len()-1)
   }
   pub fn switch(&mut self, state: StateObject<T>) -> Option<StateObject<T>> {
     let popped = self.pop();
@@ -97,6 +100,14 @@ impl <T> StateManager <T> {
     if len > 0 {
       let ix = len-1;
       let sevent = self.stack[ix].update(&mut self.data);
+      self.handle_sevent(sevent);
+    }
+  }
+  pub fn event(&mut self, event: T) {
+    let len = self.stack.len();
+    if len > 0 {
+      let ix = len-1;
+      let sevent = self.stack[ix].event(&mut self.data, event);
       self.handle_sevent(sevent);
     }
   }
