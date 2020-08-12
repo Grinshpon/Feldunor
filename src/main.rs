@@ -2,13 +2,14 @@ use bracket_lib::prelude::*;
 
 #[macro_use]
 mod state;
-//mod event;
+mod event;
 //mod inputmap;
 mod components;
 mod context;
 mod states;
 
 use crate::state::{StateManager};
+use crate::event::*;
 //use crate::components::*;
 use crate::context::*;
 use crate::states::{MainMenu};

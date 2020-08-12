@@ -1,10 +1,9 @@
 use bracket_lib::prelude::*;
 use shipyard::{IntoIter, View};
+use crate::event::*;
 use crate::state::{StateManager};
 use crate::components::*;
 use crate::states::*;
-
-pub type InputEvent = BEvent;
 
 pub struct Game(pub StateManager<InputEvent>);
 impl GameState for Game {
