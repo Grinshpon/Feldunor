@@ -17,10 +17,10 @@ impl State for RL {
   any!();
   type Event = BEvent;
   fn load(&mut self, data: &mut AppData) {
-    data.world.run(|mut entities: EntitiesViewMut, mut players: ViewMut<Player>, mut pos: ViewMut<Pos>| {
+    data.world.run(|mut entities: EntitiesViewMut, mut players: ViewMut<Player>, mut stats: ViewMut<Stat>, mut pos: ViewMut<Pos>| {
       add_entity!(self,entities,
-        (&mut players, &mut pos),
-        (Player, Pos { x: 40, y: 20 }),
+        (&mut players, &mut stats, &mut pos),
+        (Player, Stat::default(), Pos { x: 40, y: 20 }),
       );
     });
   }
@@ -33,7 +33,7 @@ impl State for RL {
     self.entities.clear();
   }
   fn event(&mut self, data: &mut AppData, event: BEvent) -> SEvent<BEvent> {
-    data.world.run_with_data(player_system, event);
+    data.world.run_with_data(player_event, event);
     SEvent::Cont
   }
 }

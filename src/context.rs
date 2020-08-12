@@ -32,7 +32,8 @@ impl GameState for Game {
         self.0.data.world.run_with_data(render_options, ctx);
       }
       else if let Some(_) = state_any.downcast_ref::<RL>() {
-        self.0.data.world.run_with_data(render_game, ctx);
+        self.0.data.world.run_with_data(render_player, ctx);
+        self.0.data.world.run_with_data(render_hud, ctx);
       }
     }
   }
@@ -55,8 +56,24 @@ fn render_options(ctx: &mut BTerm, menus: View<Menu>) {
   }
 }
 
-fn render_game(ctx: &mut BTerm, players: View<Player>, pos: View<Pos>) {
+fn render_player(ctx: &mut BTerm, players: View<Player>, pos: View<Pos>) {
   for (_,pos) in (&players, &pos).iter() {
     ctx.set(pos.x,pos.y,RGB::from_f32(1.0, 1.0, 1.0), RGB::from_f32(0., 0., 0.), to_cp437('@'));
+  }
+}
+
+fn render_hud(ctx: &mut BTerm, players: View<Player>, stats: View<Stat>) {
+  for (_,stat) in (&players, &stats).iter() {
+    ctx.print(0,0,format!(
+      "HP:{}/{} STR:{} AGL:{} VIT:{}  LVL:{} XP:{}/{}",
+      stat.hp,
+      stat.max_hp,
+      stat.strength,
+      stat.agility,
+      stat.vitality,
+      stat.level,
+      stat.xp,
+      stat.req_xp
+    ));
   }
 }
