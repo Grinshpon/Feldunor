@@ -2,7 +2,7 @@ use bracket_lib::prelude::*;
 use shipyard::{AllStoragesViewMut, EntityId, EntitiesViewMut, ViewMut};
 use std::any::Any;
 use crate::state::{AppData, SEvent, State};
-use crate::event::*;
+//use crate::event::*;
 use crate::components::*;
 use crate::context::*;
 
@@ -15,19 +15,9 @@ impl MainMenu {
   }
 }
 
-macro_rules! add_entity {
-  ( $s:ident, $ents:ident, $q:expr, $e:expr, $(,)? ) => {
-    let id = $ents.add_entity(
-      $q,
-      $e,
-    );
-    $s.entities.push(id);
-  }
-}
-
 impl State for MainMenu {
   any!();
-  type Event = InputEvent;
+  type Event = BEvent;
   fn load(&mut self, data: &mut AppData) {
     data.world.run(|mut entities: EntitiesViewMut, mut menus: ViewMut<Menu>, mut titles: ViewMut<Title>, mut texts: ViewMut<String>| {
       add_entity!(self,entities,
@@ -53,8 +43,7 @@ impl State for MainMenu {
     self.entities.clear();
   }
   fn event(&mut self, data: &mut AppData, event: BEvent) -> SEvent<BEvent> {
-    let mut enter = false;
-    data.world.run_with_data(menu_system,(event,&mut enter));
+    let enter = data.world.run_with_data(menu_system, event);
     if enter {
       // placeholder
       SEvent::Pop

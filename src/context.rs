@@ -1,11 +1,11 @@
 use bracket_lib::prelude::*;
 use shipyard::{IntoIter, View};
-use crate::event::*;
+//use crate::event::*;
 use crate::state::{StateManager};
 use crate::components::*;
 use crate::states::*;
 
-pub struct Game(pub StateManager<InputEvent>);
+pub struct Game(pub StateManager<BEvent>);
 impl GameState for Game {
   fn tick(&mut self, ctx: &mut BTerm) {
     ctx.cls();

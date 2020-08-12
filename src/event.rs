@@ -1,9 +1,17 @@
-use bracket_lib::prelude::*;
+// game event
+pub enum GEvent {
+  Select, // wait/continue (default: spacebar)
 
-pub type InputEvent = BEvent;
+  Up,
+  Down,
+  Left,
+  Right,
+  UpRight,
+  UpLeft,
+  DownRight,
+  DownLeft,
 
-/*
-pub enum Event {
-  Cont, // wait/continue (default: spacebar)
+  Esc,
+
+  //Inventory, etc...
 }
-*/
