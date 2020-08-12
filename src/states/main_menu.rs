@@ -1,4 +1,5 @@
-use shipyard::{EntityId, EntitiesViewMut, ViewMut};
+use bracket_lib::prelude::*;
+use shipyard::{AllStoragesViewMut, EntityId, EntitiesViewMut, ViewMut};
 use std::any::Any;
 use crate::state::{AppData, State};
 use crate::components::*;
@@ -13,19 +14,41 @@ impl MainMenu {
   }
 }
 
+macro_rules! add_entity {
+  ( $s:ident, $ents:ident, $q:expr, $e:expr, $(,)? ) => {
+    let id = $ents.add_entity(
+      $q,
+      $e,
+    );
+    $s.entities.push(id);
+  }
+}
+
 impl State for MainMenu {
   any!();
   type Event = InputEvent;
   fn load(&mut self, data: &mut AppData) {
-    data.world.run(|mut entities: EntitiesViewMut, mut uis: ViewMut<UI>, mut titles: ViewMut<Title>, mut texts: ViewMut<Text>| {
-      let id = entities.add_entity(
-        (&mut uis,&mut titles, &mut texts),
-        (UI, Title, Text(String::from("Feldunor"))),
+    data.world.run(|mut entities: EntitiesViewMut, mut menus: ViewMut<Menu>, mut titles: ViewMut<Title>, mut texts: ViewMut<String>| {
+      add_entity!(self,entities,
+        (&mut titles, &mut texts),
+        (Title, String::from("Feldunor")),
       );
-      self.entities.push(id);
+      let menu = Menu {
+        options: vec![MenuOption::Start, MenuOption::Options],
+        selected: 0,
+      };
+      add_entity!(self,entities,
+        &mut menus,
+        menu,
+      );
     });
   }
-  fn unload(&mut self, _data: &mut AppData) {
-    println!("main menu unloading");
+  fn unload(&mut self, data: &mut AppData) {
+    data.world.run(|mut storages: AllStoragesViewMut| {
+      for id in self.entities.iter() {
+        storages.delete(*id);
+      }
+    });
+    self.entities.clear();
   }
 }

@@ -30,13 +30,25 @@ impl GameState for Game {
       let state_any = self.0.peek().unwrap().as_any();
       if let Some(_) = state_any.downcast_ref::<MainMenu>() {
         self.0.data.world.run_with_data(render_title, ctx);
+        self.0.data.world.run_with_data(render_options,ctx);
       }
     }
   }
 }
 
-fn render_title(ctx: &mut BTerm, uis: View<UI>, titles: View<Title>, texts: View<Text>) {
-  for (_,_,txt) in (&uis,&titles,&texts).iter() {
-    ctx.print(1,1,&txt.0);
+fn render_title(ctx: &mut BTerm, titles: View<Title>, texts: View<String>) {
+  for (_,txt) in (&titles,&texts).iter() {
+    ctx.print(1,1,&txt);
+  }
+}
+
+fn render_options(ctx: &mut BTerm, menus: View<Menu>) {
+  let mut line = 5;
+  for menu in (&menus).iter() {
+    for (i,opt) in menu.options.iter().enumerate() {
+      let option = {if menu.selected == i {format!("> {:?}", opt)} else {format!("  {:?}", opt)}};
+      ctx.print(1,line,option);
+      line += 2;
+    }
   }
 }
