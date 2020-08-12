@@ -2,9 +2,10 @@ use bracket_lib::prelude::*;
 use shipyard::{AllStoragesViewMut, EntityId, EntitiesViewMut, ViewMut};
 use std::any::Any;
 use crate::state::{AppData, SEvent, State};
+use crate::states::*;
 //use crate::event::*;
 use crate::components::*;
-use crate::context::*;
+//use crate::context::*;
 
 pub struct MainMenu {
   pub entities: Vec<EntityId>,
@@ -25,7 +26,7 @@ impl State for MainMenu {
         (Title, String::from("Feldunor")),
       );
       let menu = Menu {
-        options: vec![MenuOption::Start, MenuOption::Options, MenuOption::Quit],
+        options: vec![MenuOption::Start, MenuOption::Quit],
         selected: 0,
       };
       add_entity!(self,entities,
@@ -41,15 +42,14 @@ impl State for MainMenu {
       }
     });
     self.entities.clear();
+    println!("main menu unloaded");
   }
   fn event(&mut self, data: &mut AppData, event: BEvent) -> SEvent<BEvent> {
-    let enter = data.world.run_with_data(menu_system, event);
-    if enter {
-      // placeholder
-      SEvent::Pop
-    }
-    else {
-      SEvent::Cont
+    // placeholder
+    match data.world.run_with_data(menu_system, event) {
+      Some(MenuOption::Quit) => SEvent::Pop,
+      Some(MenuOption::Start) => SEvent::Push(Box::new(RL::new())),
+      _ => SEvent::Cont,
     }
   }
 }

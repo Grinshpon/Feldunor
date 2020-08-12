@@ -29,7 +29,10 @@ impl GameState for Game {
       let state_any = self.0.peek().unwrap().as_any();
       if let Some(_) = state_any.downcast_ref::<MainMenu>() {
         self.0.data.world.run_with_data(render_title, ctx);
-        self.0.data.world.run_with_data(render_options,ctx);
+        self.0.data.world.run_with_data(render_options, ctx);
+      }
+      else if let Some(_) = state_any.downcast_ref::<RL>() {
+        self.0.data.world.run_with_data(render_game, ctx);
       }
     }
   }
@@ -49,5 +52,11 @@ fn render_options(ctx: &mut BTerm, menus: View<Menu>) {
       ctx.print(1,line,option);
       line += 2;
     }
+  }
+}
+
+fn render_game(ctx: &mut BTerm, players: View<Player>, pos: View<Pos>) {
+  for (_,pos) in (&players, &pos).iter() {
+    ctx.set(pos.x,pos.y,RGB::from_f32(1.0, 1.0, 1.0), RGB::from_f32(0., 0., 0.), to_cp437('@'));
   }
 }

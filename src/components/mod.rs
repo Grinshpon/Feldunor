@@ -6,8 +6,8 @@ pub use player::*;
 
 #[allow(dead_code)]
 pub struct Pos {
-  pub x: usize,
-  pub y: usize,
+  pub x: i32,
+  pub y: i32,
 }
 
 pub struct Title;

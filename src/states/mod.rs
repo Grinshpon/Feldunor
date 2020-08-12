@@ -12,5 +12,5 @@ macro_rules! add_entity {
 mod main_menu;
 pub use main_menu::*;
 
-mod game;
-pub use game::*;
+mod rl;
+pub use rl::*;
