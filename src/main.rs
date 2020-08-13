@@ -7,6 +7,7 @@ mod state;
 mod components;
 mod context;
 mod states;
+mod map;
 
 use crate::state::{StateManager};
 //use crate::event::*;

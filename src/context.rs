@@ -1,9 +1,11 @@
 use bracket_lib::prelude::*;
-use shipyard::{IntoIter, View};
+use shipyard::{IntoIter, UniqueView, View};
 //use crate::event::*;
 use crate::state::{StateManager};
 use crate::components::*;
 use crate::states::*;
+use crate::map;
+use crate::map::Map;
 
 pub struct Game(pub StateManager<BEvent>);
 impl GameState for Game {
@@ -32,6 +34,7 @@ impl GameState for Game {
         self.0.data.world.run_with_data(render_options, ctx);
       }
       else if let Some(_) = state_any.downcast_ref::<RL>() {
+        self.0.data.world.run_with_data(render_map, ctx);
         self.0.data.world.run_with_data(render_player, ctx);
         self.0.data.world.run_with_data(render_hud, ctx);
       }
@@ -75,5 +78,20 @@ fn render_hud(ctx: &mut BTerm, players: View<Player>, stats: View<Stat>) {
       stat.xp,
       stat.req_xp
     ));
+  }
+}
+
+fn render_map(ctx: &mut BTerm, map: UniqueView<Map>) {
+  for (i,tile) in map.iter().enumerate() {
+    let (x,y) = map::coords_of(i);
+
+    match tile {
+      map::Tile::Floor => {
+        ctx.set(x, y, RGB::from_f32(0.5, 0.5, 0.5), RGB::from_f32(0., 0., 0.), to_cp437('.'));
+      },
+      map::Tile::Wall => {
+        ctx.set(x, y, RGB::from_f32(0., 1., 0.), RGB::from_f32(0., 0., 0.), to_cp437('#'));
+      },
+    }
   }
 }

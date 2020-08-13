@@ -3,6 +3,7 @@ use shipyard::{AllStoragesViewMut, EntityId, EntitiesViewMut, ViewMut};
 use std::any::Any;
 use crate::state::{AppData, SEvent, State};
 use crate::components::*;
+use crate::map::*;
 
 pub struct RL {
   pub entities: Vec<EntityId>,
@@ -23,6 +24,7 @@ impl State for RL {
         (Player, Stat::default(), Pos { x: 40, y: 20 }),
       );
     });
+    data.world.add_unique(new_map());
   }
   fn unload(&mut self, data: &mut AppData) {
     data.world.run(|mut storages: AllStoragesViewMut| {
@@ -31,6 +33,7 @@ impl State for RL {
       }
     });
     self.entities.clear();
+    data.world.remove_unique::<Map>();
   }
   fn event(&mut self, data: &mut AppData, event: BEvent) -> SEvent<BEvent> {
     data.world.run_with_data(player_event, event);
