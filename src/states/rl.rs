@@ -24,16 +24,16 @@ impl State for RL {
         (Player, Stat::default(), Pos { x: 40, y: 20 }),
       );
     });
-    data.world.add_unique(new_map());
+    data.world.add_unique(new_map(80,50));
   }
   fn unload(&mut self, data: &mut AppData) {
+    data.world.remove_unique::<Map>();
     data.world.run(|mut storages: AllStoragesViewMut| {
       for id in self.entities.iter() {
         storages.delete(*id);
       }
     });
     self.entities.clear();
-    data.world.remove_unique::<Map>();
   }
   fn event(&mut self, data: &mut AppData, event: BEvent) -> SEvent<BEvent> {
     data.world.run_with_data(player_event, event);

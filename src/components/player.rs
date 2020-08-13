@@ -29,7 +29,7 @@ pub fn player_event(event: BEvent, map: UniqueView<Map>, players: View<Player>, 
         let ny = min(49, max(0, pos.y+dy));
 
         let ix = index_of(nx,ny);
-        if let Tile::Floor = map[ix] {
+        if let Tile::Floor = map.tiles[ix] {
           pos.x = nx;
           pos.y = ny;
         }

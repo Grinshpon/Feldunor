@@ -82,7 +82,7 @@ fn render_hud(ctx: &mut BTerm, players: View<Player>, stats: View<Stat>) {
 }
 
 fn render_map(ctx: &mut BTerm, map: UniqueView<Map>) {
-  for (i,tile) in map.iter().enumerate() {
+  for (i,tile) in map.tiles.iter().enumerate() {
     let (x,y) = map::coords_of(i);
 
     match tile {

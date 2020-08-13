@@ -123,6 +123,7 @@ impl <T> StateManager <T> {
     for s in self.stack.iter_mut() {
       s.unload(&mut self.data);
     }
+    self.stack.clear();
   }
   //pub fn run(&mut self) -> Error // main run loop
 }

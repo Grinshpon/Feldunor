@@ -42,7 +42,6 @@ impl State for MainMenu {
       }
     });
     self.entities.clear();
-    println!("main menu unloaded");
   }
   fn event(&mut self, data: &mut AppData, event: BEvent) -> SEvent<BEvent> {
     // placeholder
