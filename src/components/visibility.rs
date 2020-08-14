@@ -19,7 +19,7 @@ impl Viewshed {
 }
 
 pub fn visibility(mut map: UniqueViewMut<Map>, players: View<Player>, pos: View<Pos>, mut viewsheds: ViewMut<Viewshed>) {
-  for (_, viewshed, pos) in (&players, &mut viewsheds, &pos).iter() {
+  for (viewshed, pos) in (&mut viewsheds, &pos).iter() {
     if viewshed.dirty {
       viewshed.dirty = false;
       viewshed.visible_tiles.clear();
@@ -31,10 +31,11 @@ pub fn visibility(mut map: UniqueViewMut<Map>, players: View<Player>, pos: View<
       viewshed.visible_tiles.retain(|p| {
         p.x >= 0 && p.x < map.width as i32 - 1 && p.y >= 0 && p.y < map.height as i32 - 1
       });
-
-      for p in &viewshed.visible_tiles {
-        map.revealed_tiles[index_of(p.x,p.y)] = true;
-      }
+    }
+  }
+  for (_, viewshed) in (&players, &mut viewsheds).iter() {
+    for p in &viewshed.visible_tiles {
+      map.revealed_tiles[index_of(p.x,p.y)] = true;
     }
   }
 }

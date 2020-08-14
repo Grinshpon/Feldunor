@@ -43,7 +43,7 @@ impl State for RL {
   fn update(&mut self, data: &mut AppData) -> SEvent<BEvent> {
     data.world.run(visibility);
     if let Turn::World = self.turn {
-      // ...
+      data.world.run(monster_update);
       self.turn = Turn::Player;
     }
     SEvent::Cont
