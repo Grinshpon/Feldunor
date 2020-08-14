@@ -81,17 +81,32 @@ fn render_hud(ctx: &mut BTerm, players: View<Player>, stats: View<Stat>) {
   }
 }
 
-fn render_map(ctx: &mut BTerm, map: UniqueView<Map>) {
+fn render_map(ctx: &mut BTerm, map: UniqueView<Map>, viewsheds: View<Viewshed>) {
   for (i,tile) in map.tiles.iter().enumerate() {
     let (x,y) = map::coords_of(i);
+    let p = Point::new(x,y);
 
-    match tile {
-      map::Tile::Floor => {
-        ctx.set(x, y, RGB::from_f32(0.5, 0.5, 0.5), RGB::from_f32(0., 0., 0.), to_cp437('.'));
-      },
-      map::Tile::Wall => {
-        ctx.set(x, y, RGB::from_f32(0., 1., 0.), RGB::from_f32(0., 0., 0.), to_cp437('#'));
-      },
+    for vs in viewsheds.iter() {
+      if vs.visible_tiles.contains(&p) {
+        match tile {
+          map::Tile::Floor => {
+            ctx.set(x, y, RGB::from_f32(0.5, 0.5, 0.5), RGB::from_f32(0., 0., 0.), to_cp437('.'));
+          },
+          map::Tile::Wall => {
+            ctx.set(x, y, RGB::from_f32(0.8, 0.8, 0.8), RGB::from_f32(0., 0., 0.), to_cp437('#'));
+          },
+        }
+      }
+      else if map.revealed_tiles[i] {
+        match tile {
+          map::Tile::Floor => {
+            ctx.set(x, y, RGB::from_f32(0.2, 0.2, 0.2), RGB::from_f32(0., 0., 0.), to_cp437('.'));
+          },
+          map::Tile::Wall => {
+            ctx.set(x, y, RGB::from_f32(0.5, 0.5, 0.5), RGB::from_f32(0., 0., 0.), to_cp437('#'));
+          },
+        }
+      }
     }
   }
 }

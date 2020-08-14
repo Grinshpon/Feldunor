@@ -8,9 +8,9 @@ use crate::map::*;
 
 pub struct Player;
 
-pub fn player_event(event: BEvent, map: UniqueView<Map>, players: View<Player>, mut pos: ViewMut<Pos>) {
+pub fn player_event(event: BEvent, map: UniqueView<Map>, players: View<Player>, mut pos: ViewMut<Pos>, mut viewsheds: ViewMut<Viewshed>) {
   if let BEvent::KeyboardInput {key, scan_code:_, pressed} = event {
-    for (_,pos) in (&players, &mut pos).iter() {
+    for (_,pos, vs) in (&players, &mut pos, &mut viewsheds).iter() {
       if pressed {
         use crate::VirtualKeyCode::*;
         //movement
@@ -32,6 +32,7 @@ pub fn player_event(event: BEvent, map: UniqueView<Map>, players: View<Player>, 
         if let Tile::Floor = map.tiles[ix] {
           pos.x = nx;
           pos.y = ny;
+          vs.dirty = true;
         }
       }
     }

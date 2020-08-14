@@ -11,7 +11,7 @@ macro_rules! any {
 
 /// The state manager is modeled after Amethyst's state machine
 
-// State Event (what to do after handling input)
+/// State Event (what to do after handling input)
 #[allow(dead_code)]
 pub enum SEvent<T> {
   Cont, // do nothing and continue
@@ -23,7 +23,6 @@ pub enum SEvent<T> {
 }
 
 pub struct AppData {
-  //ctx_modified: bool, //private;if window settings (like size) or some other stuff is changed, this will prompt a refresh
   pub world: World,
 }
 
@@ -125,5 +124,4 @@ impl <T> StateManager <T> {
     }
     self.stack.clear();
   }
-  //pub fn run(&mut self) -> Error // main run loop
 }
