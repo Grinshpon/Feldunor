@@ -5,12 +5,22 @@ use crate::state::{AppData, SEvent, State};
 use crate::components::*;
 use crate::map::*;
 
+#[derive(Clone,Copy,PartialEq,Eq)]
+pub enum Turn {
+  Player,
+  World,
+}
+
 pub struct RL {
   pub entities: Vec<EntityId>,
+  pub turn: Turn,
 }
 impl RL {
   pub fn new() -> Self {
-    RL {entities: Vec::new()}
+    RL {
+      entities: Vec::new(),
+      turn: Turn::Player,
+    }
   }
 }
 
@@ -32,10 +42,18 @@ impl State for RL {
   }
   fn update(&mut self, data: &mut AppData) -> SEvent<BEvent> {
     data.world.run(visibility);
+    if let Turn::World = self.turn {
+      // ...
+      self.turn = Turn::Player;
+    }
     SEvent::Cont
   }
   fn event(&mut self, data: &mut AppData, event: BEvent) -> SEvent<BEvent> {
-    data.world.run_with_data(player_event, event);
+    if let Turn::Player = self.turn {
+      if data.world.run_with_data(player_event, event) {
+        self.turn = Turn::World;
+      }
+    }
     SEvent::Cont
   }
 }

@@ -8,7 +8,15 @@ use crate::map::*;
 
 pub struct Player;
 
-pub fn player_event(event: BEvent, map: UniqueView<Map>, players: View<Player>, mut pos: ViewMut<Pos>, mut viewsheds: ViewMut<Viewshed>) {
+/// returns whether or not its turn is over
+pub fn player_event(
+  event: BEvent,
+  map: UniqueView<Map>,
+  players: View<Player>,
+  mut pos: ViewMut<Pos>,
+  mut viewsheds: ViewMut<Viewshed>,
+) -> bool {
+  let mut turn_finished = false;
   if let BEvent::KeyboardInput {key, scan_code:_, pressed} = event {
     for (_,pos, vs) in (&players, &mut pos, &mut viewsheds).iter() {
       if pressed {
@@ -33,8 +41,10 @@ pub fn player_event(event: BEvent, map: UniqueView<Map>, players: View<Player>, 
           pos.x = nx;
           pos.y = ny;
           vs.dirty = true;
+          turn_finished = true;
         }
       }
     }
   }
+  turn_finished
 }
