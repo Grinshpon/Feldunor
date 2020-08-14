@@ -59,12 +59,6 @@ fn render_options(ctx: &mut BTerm, menus: View<Menu>) {
   }
 }
 
-fn render_actors(ctx: &mut BTerm, renders: View<Render>, pos: View<Pos>) {
-  for (render,pos) in (&renders, &pos).iter() {
-    ctx.set(pos.x,pos.y, render.fg,render.bg, render.glyph);
-  }
-}
-
 fn render_hud(ctx: &mut BTerm, players: View<Player>, stats: View<Stat>) {
   for (_,stat) in (&players, &stats).iter() {
     ctx.print(0,0,format!(
@@ -78,6 +72,23 @@ fn render_hud(ctx: &mut BTerm, players: View<Player>, stats: View<Stat>) {
       stat.xp,
       stat.req_xp
     ));
+  }
+}
+
+fn render_actors(
+  ctx: &mut BTerm,
+  renders: View<Render>,
+  pos: View<Pos>,
+  players: View<Player>,
+  viewsheds: View<Viewshed>,
+) {
+  for (render,pos) in (&renders, &pos).iter() {
+    for (_,vs) in (&players, &viewsheds).iter() {
+      let p = Point::new(pos.x,pos.y);
+      if vs.visible_tiles.contains(&p) {
+        ctx.set(pos.x,pos.y, render.fg,render.bg, render.glyph);
+      }
+    }
   }
 }
 
