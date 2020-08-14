@@ -1,6 +1,6 @@
 use std::cmp::{max, min};
 use bracket_lib::prelude::RandomNumberGenerator as RNG;
-use bracket_lib::prelude::{Algorithm2D, BaseMap, Point, BTerm, RGB};
+use bracket_lib::prelude::{Algorithm2D, BaseMap, Point};
 //use delaunator::*;
 
 #[derive(Debug,Clone,Copy,PartialEq,Eq)]
