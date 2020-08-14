@@ -10,6 +10,12 @@ pub use stat::*;
 mod visibility;
 pub use visibility::*;
 
+mod monster;
+pub use monster::*;
+
+mod render;
+pub use render::*;
+
 #[allow(dead_code)]
 pub struct Pos {
   pub x: i32,

@@ -35,7 +35,7 @@ impl GameState for Game {
       }
       else if let Some(_) = state_any.downcast_ref::<RL>() {
         self.0.data.world.run_with_data(render_map, ctx);
-        self.0.data.world.run_with_data(render_player, ctx);
+        self.0.data.world.run_with_data(render_actors, ctx);
         self.0.data.world.run_with_data(render_hud, ctx);
       }
     }
@@ -59,9 +59,9 @@ fn render_options(ctx: &mut BTerm, menus: View<Menu>) {
   }
 }
 
-fn render_player(ctx: &mut BTerm, players: View<Player>, pos: View<Pos>) {
-  for (_,pos) in (&players, &pos).iter() {
-    ctx.set(pos.x,pos.y,RGB::from_f32(1.0, 1.0, 1.0), RGB::from_f32(0., 0., 0.), to_cp437('@'));
+fn render_actors(ctx: &mut BTerm, renders: View<Render>, pos: View<Pos>) {
+  for (render,pos) in (&renders, &pos).iter() {
+    ctx.set(pos.x,pos.y, render.fg,render.bg, render.glyph);
   }
 }
 
@@ -81,12 +81,12 @@ fn render_hud(ctx: &mut BTerm, players: View<Player>, stats: View<Stat>) {
   }
 }
 
-fn render_map(ctx: &mut BTerm, map: UniqueView<Map>, viewsheds: View<Viewshed>) {
+fn render_map(ctx: &mut BTerm, map: UniqueView<Map>, players: View<Player>, viewsheds: View<Viewshed>) {
   for (i,tile) in map.tiles.iter().enumerate() {
     let (x,y) = map::coords_of(i);
     let p = Point::new(x,y);
 
-    for vs in viewsheds.iter() {
+    for (_,vs) in (&players, &viewsheds).iter() {
       if vs.visible_tiles.contains(&p) {
         match tile {
           map::Tile::Floor => {
@@ -100,10 +100,10 @@ fn render_map(ctx: &mut BTerm, map: UniqueView<Map>, viewsheds: View<Viewshed>) 
       else if map.revealed_tiles[i] {
         match tile {
           map::Tile::Floor => {
-            ctx.set(x, y, RGB::from_f32(0.2, 0.2, 0.2), RGB::from_f32(0., 0., 0.), to_cp437('.'));
+            ctx.set(x, y, RGB::from_f32(0.1, 0.1, 0.1), RGB::from_f32(0., 0., 0.), to_cp437('.'));
           },
           map::Tile::Wall => {
-            ctx.set(x, y, RGB::from_f32(0.5, 0.5, 0.5), RGB::from_f32(0., 0., 0.), to_cp437('#'));
+            ctx.set(x, y, RGB::from_f32(0.4, 0.4, 0.4), RGB::from_f32(0., 0., 0.), to_cp437('#'));
           },
         }
       }
