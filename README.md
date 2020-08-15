@@ -17,11 +17,11 @@ Also made using the help of this [tutorial](https://bfnightly.bracketproductions
 ### Other Commands
 | Command         | Key   |
 |-----------------|-------|
-<!-- | Character Sheet | C     |
-| Help            | ?     | -->
 | Continue        | Space |
-| Quit            | Q     |
 
+<!-- | Character Sheet | C     |
+| Quit            | Q     |
+| Help            | ?     | -->
 
 # Compiling and Running
 
