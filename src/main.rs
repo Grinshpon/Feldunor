@@ -20,7 +20,7 @@ fn main () -> BError {
   game.0.push(Box::new(MainMenu::new()));
 
   let context = BTermBuilder::simple80x50()
-    .with_title("Igloo")
+    .with_title("Feldunor")
     .with_advanced_input(true)
     .build()?;
 
