@@ -1,7 +1,9 @@
 # Feldunor
 A roguelike and reboot of a project I started a couple years ago.
 
-A simple roguelike written in Rust, using the Shipyard ECS crate, and bracket\_lib. 
+A simple roguelike written in Rust, using the [Shipyard](https://github.com/leudz/shipyard) and [bracket-lib](https://github.com/thebracket/bracket-lib).
+
+Also made using the help of this [tutorial](https://bfnightly.bracketproductions.com/rustbook/) written by the author of bracket-lib.
 
 # Controls
 
@@ -15,8 +17,8 @@ A simple roguelike written in Rust, using the Shipyard ECS crate, and bracket\_l
 ### Other Commands
 | Command         | Key   |
 |-----------------|-------|
-| Character Sheet | C     |
-| Help            | ?     |
+<!-- | Character Sheet | C     |
+| Help            | ?     | -->
 | Continue        | Space |
 | Quit            | Q     |
 

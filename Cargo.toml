@@ -1,5 +1,5 @@
 [package]
-name = "Feldunor"
+name = "feldunor"
 version = "0.1.0"
 authors = ["Daniel"]
 edition = "2018"
