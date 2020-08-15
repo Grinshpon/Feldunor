@@ -23,3 +23,5 @@ pub struct Pos {
 }
 
 pub struct Title;
+
+pub struct Name(pub String);

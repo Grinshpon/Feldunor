@@ -68,6 +68,7 @@ fn initial_entities(
   mut viewsheds: ViewMut<Viewshed>,
   mut monsters: ViewMut<Monster>,
   mut renders: ViewMut<Render>,
+  mut names: ViewMut<Name>,
 ) {
   let start = map.rooms[0].center();
   add_entity!(state,entities,
@@ -77,8 +78,8 @@ fn initial_entities(
   for room in map.rooms.iter().skip(1) {
     let [x,y] = room.center();
     add_entity!(state,entities,
-      (&mut monsters, &mut pos, &mut viewsheds, &mut renders),
-      (Monster, Pos {x,y}, Viewshed::new(12), Render::goblin()),
+      (&mut monsters, &mut names, &mut pos, &mut viewsheds, &mut renders),
+      (Monster, Name(String::from("Goblin")), Pos {x,y}, Viewshed::new(12), Render::goblin()),
     );
   }
 }

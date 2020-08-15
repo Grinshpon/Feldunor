@@ -104,7 +104,7 @@ fn render_map(ctx: &mut BTerm, map: UniqueView<Map>, players: View<Player>, view
             ctx.set(x, y, RGB::from_f32(0.5, 0.5, 0.5), RGB::from_f32(0., 0., 0.), to_cp437('.'));
           },
           map::Tile::Wall => {
-            ctx.set(x, y, RGB::from_f32(0.8, 0.8, 0.8), RGB::from_f32(0., 0., 0.), to_cp437('#'));
+            ctx.set(x, y, RGB::from_f32(0.85, 0.85, 0.85), RGB::from_f32(0., 0., 0.), to_cp437('#'));
           },
         }
       }
@@ -114,7 +114,7 @@ fn render_map(ctx: &mut BTerm, map: UniqueView<Map>, players: View<Player>, view
             ctx.set(x, y, RGB::from_f32(0.1, 0.1, 0.1), RGB::from_f32(0., 0., 0.), to_cp437('.'));
           },
           map::Tile::Wall => {
-            ctx.set(x, y, RGB::from_f32(0.4, 0.4, 0.4), RGB::from_f32(0., 0., 0.), to_cp437('#'));
+            ctx.set(x, y, RGB::from_f32(0.3, 0.3, 0.3), RGB::from_f32(0., 0., 0.), to_cp437('#'));
           },
         }
       }
