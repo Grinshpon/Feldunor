@@ -1,14 +1,16 @@
-use shipyard::{IntoIter, View};
-use bracket_lib::prelude::Point;
+use shipyard::{IntoIter, UniqueViewMut, View, ViewMut};
+use bracket_lib::prelude::{a_star_search, Point};
 use crate::components::*;
+use crate::map::Map;
 
 pub struct Monster;
 
 pub fn monster_update(
+  mut map: UniqueViewMut<Map>,
   players: View<Player>,
   monsters: View<Monster>,
-  pos: View<Pos>,
-  viewsheds: View<Viewshed>,
+  mut pos: ViewMut<Pos>,
+  mut viewsheds: ViewMut<Viewshed>,
   names: View<Name>,
 ) {
   let mut p = Point::new(0,0);
@@ -17,9 +19,21 @@ pub fn monster_update(
     p.y = pos.y;
   }
 
-  for (_,name,vs) in (&monsters, &names, &viewsheds).iter() {
+  for (_,name,pos,vs) in (&monsters, &names, &mut pos, &mut viewsheds).iter() {
     if vs.visible_tiles.contains(&p) {
-      println!("{} ponders his own existence",&name.0);
+      //println!("{} shouts",&name.0);
+      let path = a_star_search(
+        map.index_of(pos.x,pos.y) as i32,
+        map.index_of(p.x,p.y) as i32,
+        &mut *map,
+      );
+      if path.success && path.steps.len() > 1 {
+        let (nx,ny) = map.coords_of(path.steps[1]);
+        println!("{} moves", &name.0);
+        pos.x = nx;
+        pos.y = ny;
+        vs.dirty = true;
+      }
     }
   }
 }

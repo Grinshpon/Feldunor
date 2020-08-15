@@ -1,5 +1,5 @@
 use crate::components::*;
-use crate::map::{index_of,Map};
+use crate::map::{Map};
 use bracket_lib::prelude::{field_of_view, Point};
 use shipyard::{IntoIter, UniqueViewMut, View, ViewMut};
 
@@ -35,7 +35,8 @@ pub fn visibility(mut map: UniqueViewMut<Map>, players: View<Player>, pos: View<
   }
   for (_, viewshed) in (&players, &mut viewsheds).iter() {
     for p in &viewshed.visible_tiles {
-      map.revealed_tiles[index_of(p.x,p.y)] = true;
+      let ix = map.index_of(p.x,p.y);
+      map.revealed_tiles[ix] = true;
     }
   }
 }

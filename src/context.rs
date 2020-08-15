@@ -94,7 +94,7 @@ fn render_actors(
 
 fn render_map(ctx: &mut BTerm, map: UniqueView<Map>, players: View<Player>, viewsheds: View<Viewshed>) {
   for (i,tile) in map.tiles.iter().enumerate() {
-    let (x,y) = map::coords_of(i);
+    let (x,y) = map.coords_of(i);
     let p = Point::new(x,y);
 
     for (_,vs) in (&players, &viewsheds).iter() {
