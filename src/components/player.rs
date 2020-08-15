@@ -36,6 +36,10 @@ pub fn player_event(
         let nx = min(79, max(0, pos.x+dx));
         let ny = min(49, max(0, pos.y+dy));
 
+        if let Space = key {
+          turn_finished = true;
+        }
+
         let ix = map.index_of(nx,ny);
         if let Tile::Floor = map.tiles[ix] {
           pos.x = nx;
