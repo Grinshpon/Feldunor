@@ -29,7 +29,7 @@ pub fn monster_update(
       );
       if path.success && path.steps.len() > 1 {
         let (nx,ny) = map.coords_of(path.steps[1]);
-        println!("{} moves", &name.0);
+        //println!("{} moves", &name.0);
         pos.x = nx;
         pos.y = ny;
         vs.dirty = true;
