@@ -16,6 +16,9 @@ pub use monster::*;
 mod render;
 pub use render::*;
 
+mod blocktile;
+pub use blocktile::*;
+
 #[allow(dead_code)]
 pub struct Pos {
   pub x: i32,

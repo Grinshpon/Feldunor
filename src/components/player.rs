@@ -41,7 +41,7 @@ pub fn player_event(
         }
 
         let ix = map.index_of(nx,ny);
-        if let Tile::Floor = map.tiles[ix] {
+        if !map.blocked_tiles[ix] {
           pos.x = nx;
           pos.y = ny;
           vs.dirty = true;

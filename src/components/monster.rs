@@ -20,6 +20,9 @@ pub fn monster_update(
   }
 
   for (_,name,pos,vs) in (&monsters, &names, &mut pos, &mut viewsheds).iter() {
+    let ix = map.index_of(pos.x,pos.y);
+    map.blocked_tiles[ix] = false;
+
     if vs.visible_tiles.contains(&p) {
       //println!("{} shouts",&name.0);
       let path = a_star_search(
@@ -27,11 +30,15 @@ pub fn monster_update(
         map.index_of(p.x,p.y) as i32,
         &mut *map,
       );
-      if path.success && path.steps.len() > 1 {
+      if path.success && path.steps.len() > 2 {
         let (nx,ny) = map.coords_of(path.steps[1]);
-        //println!("{} moves", &name.0);
+        println!("{} moves from ({},{}) to ({},{})", &name.0,pos.x,pos.y,nx,ny);
         pos.x = nx;
         pos.y = ny;
+
+        let ix = map.index_of(pos.x,pos.y);
+        map.blocked_tiles[ix] = true;
+
         vs.dirty = true;
       }
     }

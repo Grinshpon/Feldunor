@@ -30,6 +30,9 @@ impl State for RL {
   fn load(&mut self, data: &mut AppData) {
     data.world.add_unique(Map::new(80,50));
     data.world.run_with_data(initial_entities,self);
+
+    data.world.run(visibility);
+    data.world.run(map_index);
   }
   fn unload(&mut self, data: &mut AppData) {
     data.world.remove_unique::<Map>();
@@ -42,6 +45,7 @@ impl State for RL {
   }
   fn update(&mut self, data: &mut AppData) -> SEvent<BEvent> {
     data.world.run(visibility);
+    data.world.run(map_index);
     if let Turn::World = self.turn {
       data.world.run(monster_update);
       self.turn = Turn::Player;
@@ -69,6 +73,7 @@ fn initial_entities(
   mut monsters: ViewMut<Monster>,
   mut renders: ViewMut<Render>,
   mut names: ViewMut<Name>,
+  mut blocks: ViewMut<BlockTile>,
 ) {
   let start = map.rooms[0].center();
   add_entity!(state,entities,
@@ -78,8 +83,8 @@ fn initial_entities(
   for room in map.rooms.iter().skip(1) {
     let [x,y] = room.center();
     add_entity!(state,entities,
-      (&mut monsters, &mut names, &mut pos, &mut viewsheds, &mut renders),
-      (Monster, Name(String::from("Goblin")), Pos {x,y}, Viewshed::new(12), Render::goblin()),
+      (&mut monsters, &mut names, &mut pos, &mut viewsheds, &mut renders, &mut blocks),
+      (Monster, Name(String::from("Goblin")), Pos {x,y}, Viewshed::new(12), Render::goblin(), BlockTile),
     );
   }
 }

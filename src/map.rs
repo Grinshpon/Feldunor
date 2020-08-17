@@ -13,6 +13,7 @@ pub enum Tile {
 pub struct Map {
   pub tiles: Vec<Tile>,
   pub revealed_tiles: Vec<bool>,
+  pub blocked_tiles: Vec<bool>,
   pub rooms: Vec<Room>,
   pub width: u32,
   pub height: u32,
@@ -37,6 +38,7 @@ impl Map {
     let mut map = Map {
       tiles: vec![Tile::Wall;area],
       revealed_tiles: vec![false; area],
+      blocked_tiles: vec![false; area],
       rooms: Vec::new(),
       width,
       height,
@@ -82,7 +84,14 @@ impl Map {
       //println!("{}", timeout);
     }
 
-   map
+    map.populate_blocked();
+
+    map
+  }
+  pub fn populate_blocked(&mut self) {
+    for (i,tile) in self.tiles.iter_mut().enumerate() {
+      self.blocked_tiles[i] = *tile == Tile::Wall;
+    }
   }
   fn is_exit_valid(&self, x:i32, y:i32) -> bool {
     if (x < 1) || (x as u32 > self.width-1) || (y < 1) || (y as u32 > self.height-1) {
@@ -90,7 +99,7 @@ impl Map {
     }
     else {
       let ix = self.index_of(x,y);
-      self.tiles[ix as usize] != Tile::Wall
+      !self.blocked_tiles[ix]
     }
   }
   fn dig_room(&mut self, room: &Room) {
