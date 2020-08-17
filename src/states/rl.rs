@@ -31,8 +31,8 @@ impl State for RL {
     data.world.add_unique(Map::new(80,50));
     data.world.run_with_data(initial_entities,self);
 
-    data.world.run(visibility);
-    data.world.run(map_index);
+    //data.world.run(visibility);
+    //data.world.run(map_index);
   }
   fn unload(&mut self, data: &mut AppData) {
     data.world.remove_unique::<Map>();
@@ -83,8 +83,8 @@ fn initial_entities(
   for room in map.rooms.iter().skip(1) {
     let [x,y] = room.center();
     add_entity!(state,entities,
-      (&mut monsters, &mut names, &mut pos, &mut viewsheds, &mut renders, &mut blocks),
-      (Monster, Name(String::from("Goblin")), Pos {x,y}, Viewshed::new(12), Render::goblin(), BlockTile),
+      (&mut monsters, &mut names, &mut stats, &mut pos, &mut viewsheds, &mut renders, &mut blocks),
+      (Monster, Name(String::from("Goblin")), Stat::new(2,2,2,2), Pos {x,y}, Viewshed::new(12), Render::goblin(), BlockTile),
     );
   }
 }

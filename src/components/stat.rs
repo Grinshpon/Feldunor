@@ -15,8 +15,10 @@ pub struct Stat {
 
 impl Stat {
   pub fn default() -> Self {
-    let (strength,dexterity,agility,vitality) = (5,5,5,5);
-    let max_hp = strength/2 + dexterity/2 + agility/2 + vitality*2;
+    Self::new(5,5,5,5)
+  }
+  pub fn new(strength: u32, dexterity: u32, agility: u32, vitality: u32) -> Self {
+    let max_hp = calc_hp(strength,dexterity,agility,vitality);
     let hp = max_hp;
     Stat { max_hp, hp, strength, dexterity, agility, vitality, level: 1, xp: 0, req_xp: BASE_XP }
   }
@@ -27,4 +29,8 @@ static BASE_XP: usize = 100;
 #[allow(dead_code)]
 pub fn next_level(prev: usize) -> usize {
   prev + prev/2
+}
+
+fn calc_hp(strength: u32, dexterity: u32, agility: u32, vitality: u32) -> u32 {
+    strength/2 + dexterity/2 + agility/2 + vitality*2
 }
