@@ -61,11 +61,12 @@ fn render_options(ctx: &mut BTerm, menus: View<Menu>) {
 
 fn render_hud(ctx: &mut BTerm, players: View<Player>, stats: View<Stat>) {
   for (_,stat) in (&players, &stats).iter() {
-    ctx.print(0,0,format!(
-      "HP:{}/{} STR:{} AGL:{} VIT:{}  LVL:{} XP:{}/{}",
+    ctx.print(0,49,format!(
+      "HP:{}/{} STR:{} DEX: {} AGL:{} VIT:{}  LVL:{} XP:{}/{}",
       stat.hp,
       stat.max_hp,
       stat.strength,
+      stat.dexterity,
       stat.agility,
       stat.vitality,
       stat.level,

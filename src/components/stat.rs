@@ -3,6 +3,7 @@ pub struct Stat {
   pub hp: u32,
 
   pub strength: u32, //str determines weapon damage mod and using
+  pub dexterity: u32, //dex determines % to hit and ranged combat (and lockpicking in future)
   pub agility: u32, //agl determines evade and % to hit (and movement/action speed)
   pub vitality: u32, //vit determines health and resistance
   //pub intelligence: u32, //int determines identification and magic use
@@ -14,10 +15,10 @@ pub struct Stat {
 
 impl Stat {
   pub fn default() -> Self {
-    let (strength,agility,vitality) = (5,5,5);
-    let max_hp = strength/2 + agility/2 + vitality*2;
+    let (strength,dexterity,agility,vitality) = (5,5,5,5);
+    let max_hp = strength/2 + dexterity/2 + agility/2 + vitality*2;
     let hp = max_hp;
-    Stat { max_hp, hp, strength, agility, vitality, level: 1, xp: 0, req_xp: BASE_XP }
+    Stat { max_hp, hp, strength, dexterity, agility, vitality, level: 1, xp: 0, req_xp: BASE_XP }
   }
 }
 
